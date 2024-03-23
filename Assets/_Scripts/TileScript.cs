@@ -11,7 +11,7 @@ public class TileScript : MonoBehaviour
     [SerializeField] private float _side = 1.1f;
     private Renderer _renderer;
 
-    public TileState State { get; set; }
+    public TileState State;
 
     // Event for notifying state change
     public event Action<TileScript> OnStateChanged;

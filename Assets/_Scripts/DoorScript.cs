@@ -37,6 +37,20 @@ public class DoorScript : MonoBehaviour
         }
     }
 
+    private bool CheckEnabled()
+    {
+        bool areEnabled = false;
+        foreach (GameObject tileObject in _tiles)
+        {
+            if (tileObject.GetComponent<TileScript>() != null &&
+                tileObject.GetComponent<TileScript>().State == TileState.Enabled)
+            {
+                areEnabled = true;
+            }
+        }
+        return areEnabled;
+    }
+
     void HandleTileStateChanged(TileScript tile)
     {
         if (tile.State == TileState.SteppedOn && _enabledTiles.Contains(tile.gameObject))
@@ -63,7 +77,8 @@ public class DoorScript : MonoBehaviour
                 }
             }
         }
-        if(_enabledTiles.Count < 1) { _renderer.material.color = Color.blue; }
+
+        if(!CheckEnabled()) { _renderer.material.color = Color.blue; }
     }
 
 
