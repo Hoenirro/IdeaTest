@@ -19,7 +19,7 @@ public class TileScript : MonoBehaviour
     private void Awake()
     {
         _renderer = GetComponent<Renderer>();
-        State = TileState.Enabled;
+        SetEnabled();
         Vector3 boxSizeX = new Vector3(0.1f, 0.1f, _side);
         Vector3 boxSizeY = new Vector3(_side, 0.1f, 0.1f);
         FindNeighbors(boxSizeX);
@@ -41,7 +41,7 @@ public class TileScript : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player") && State != TileState.Disabled)
         {
             SteppedOn();
         }
@@ -49,17 +49,16 @@ public class TileScript : MonoBehaviour
 
     public List<string> GetNeighbors() {  return _neighbors; }
 
-    //void OnDrawGizmosSelected()
-    //{
-    //    Gizmos.color = Color.red;
-    //    Gizmos.DrawWireCube(transform.position, new Vector3(0.1f, 0.1f, _side));
-    //    Gizmos.DrawWireCube(transform.position, new Vector3(_side, 0.1f, 0.1f));
-    //}
+
 
     public void SetEnabled()
     {
-        State = TileState.Enabled;
-        _renderer.material.color = Color.white;
+        if (State != TileState.Disabled)
+        {
+            State = TileState.Enabled;
+            _renderer.material.color = Color.white;
+        } else { SetDisabled(); }
+        
     }
 
     public void SetDisabled()
@@ -83,3 +82,10 @@ public class TileScript : MonoBehaviour
 
     }
 }
+
+//void OnDrawGizmosSelected()
+//{
+//    Gizmos.color = Color.red;
+//    Gizmos.DrawWireCube(transform.position, new Vector3(0.1f, 0.1f, _side));
+//    Gizmos.DrawWireCube(transform.position, new Vector3(_side, 0.1f, 0.1f));
+//}
